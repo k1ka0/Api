@@ -1,7 +1,8 @@
 package br.com.rest;
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
-import org.hamcrest.Matchers;
+import org.hamcrest.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,6 +52,18 @@ public class OlaTest {
 		Assert.assertThat("Maria", Matchers.is("Maria"));
 		Assert.assertThat(128, Matchers.is(128));
 		Assert.assertThat(128, Matchers.isA(Integer.class));
-
+	}
+	
+	@Test
+	public void devoValidarBody() {
+		given()
+		.when()
+			.get("http://restapi.wcaquino.me/ola")
+		.then()
+			.assertThat()
+			.statusCode(200)
+			.body(is("Ola Mundo!"))
+			.body(containsString("Mundo!"))
+			.body(is(not(nullValue())));
 	}
 }
